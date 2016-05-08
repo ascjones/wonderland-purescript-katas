@@ -1,4 +1,11 @@
-module AlphabetCipher where
+module AlphabetCipher
+  ( SecretKey
+  , PlainText
+  , CipherText
+  , encode
+  , decode
+  , decipher
+  ) where
 
 import Prelude
 
