@@ -18,20 +18,19 @@ type SecretKey = String
 type PlainText = String
 type CipherText = String
 
-charToInt :: Char -> Int
-charToInt = toLower >>> toCharCode
-
 a :: Int
 a = toCharCode 'a'
 
-z :: Int
-z = toCharCode 'z'
+charToInt :: Char -> Int
+charToInt = toLower >>> toCharCode >>> toZeroBased
+  where
+  toZeroBased ch = ch - a
 
 substitute :: Char -> Char -> Char
 substitute keyChar msgChar =
   let keyInt = charToInt keyChar in
   let msgInt = charToInt msgChar in
-  fromCharCode $ (+) a $ mod ((keyInt - a) + (msgInt - a)) ((z - a) + 1)
+  fromCharCode $ (+) a $ mod (keyInt + msgInt) 26
 
 encode :: SecretKey -> PlainText -> CipherText
 encode key msg = fromCharArray $ (uncurry encodeChar) <$> zip (toCharArray msg) (range 0 $ length msg - 1)
