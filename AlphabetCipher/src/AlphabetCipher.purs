@@ -31,7 +31,7 @@ substitute :: Char -> Char -> Char
 substitute keyChar msgChar =
   let keyInt = charToInt keyChar in
   let msgInt = charToInt msgChar in
-  fromCharCode $ (+) a $ mod (keyInt + msgInt) a
+  fromCharCode $ (+) a $ mod ((keyInt - a) + (msgInt - a)) ((z - a) + 1)
 
 encode :: SecretKey -> PlainText -> CipherText
 encode key msg = fromCharArray $ (uncurry encodeChar) <$> zip (toCharArray msg) (range 0 $ length msg - 1)
