@@ -28,18 +28,11 @@ charToInt :: Char -> Int
 charToInt = toLower >>> toCharCode >>> toZeroBased
   where toZeroBased ch = ch - a
 
-abs :: Int -> Int
-abs i = if i > 0 then i else i * -1
-
 --   0 1 2 3
 -- 0 0 1 2 3
 -- 1 1 2 3 0
 -- 2 2 3 0 1
 -- 3 3 0 1 2
-
--- 0 1 2 3 0 1 2 3
--- 3 - 2 = 1
--- 2 - 3 = -1
 
 substitute :: Char -> Char -> Char
 substitute keyChar msgChar =
@@ -47,12 +40,15 @@ substitute keyChar msgChar =
   let msgInt = charToInt msgChar in
   fromCharCode $ (+) a $ mod (keyInt + msgInt) 26
 
-encode :: SecretKey -> PlainText -> CipherText
-encode key msg = fromCharArray $ (uncurry encodeChar) <$> zip (toCharArray msg) (range 0 $ length msg - 1)
+mapChars :: (Char -> Char -> Char) -> SecretKey -> String -> String
+mapChars f key msg = fromCharArray $ (uncurry f) <$> mapWithKeyChars
   where
-  encodeChar c i =
-    let keyChar = charAt (mod i $ length key) key in
-    substitute keyChar c
+  mapWithKeyChars =
+    let keyChars = (\i -> charAt (mod i $ length key) key) <$> (range 0 $ length msg -1) in
+    zip (toCharArray msg) keyChars
+
+encode :: SecretKey -> PlainText -> CipherText
+encode = mapChars substitute
 
 decode :: SecretKey -> CipherText -> PlainText
 decode key ct = fromCharArray $ (uncurry decodeChar) <$> zip (toCharArray ct) (range 0 $ length ct - 1)
