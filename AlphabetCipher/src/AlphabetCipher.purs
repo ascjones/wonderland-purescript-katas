@@ -62,7 +62,7 @@ decode key ct = fromCharArray $ (uncurry decodeChar) <$> zip (toCharArray ct) (r
     let keyInt = charToInt keyChar in
     let msgInt = charToInt c in
     let diff = msgInt - keyInt in
-    fromCharCode $ (+) a $ if diff >= 0 then diff else diff + 26 -- todo make this function better
+    fromCharCode $ (+) a $ mod (diff + 26) 26 -- todo make this function better
 
 decipher :: CipherText -> PlainText -> SecretKey
 decipher ct msg = "decipherme"
