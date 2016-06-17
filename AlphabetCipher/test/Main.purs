@@ -23,4 +23,4 @@ main = runTest do
   suite "decipher" do
     test "can extract the secret keywork given an encrypted message and the original message" do
       Assert.equal "vigilance" $ decipher "opkyfipmfmwcvqoklyhxywgeecpvhelzg" "thequickbrownfoxjumpsoveralazydog"
-      Assert.equal "scones" $ decipher "hcqxqqtqljmlzhwiivgbsapaiwcenmyu" "hcqxqqtqljmlzhwiivgbsapaiwcenmyu"
+      Assert.equal "scones" $ decipher "hcqxqqtqljmlzhwiivgbsapaiwcenmyu" "packmyboxwithfivedozenliquorjugs"
